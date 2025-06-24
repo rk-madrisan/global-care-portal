@@ -1,14 +1,27 @@
 
 import { Calendar, Users, Award, Clock } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { useNavigate } from 'react-router-dom';
+import { useAuth } from '@/contexts/AuthContext';
 
 const HeroSection = () => {
+  const navigate = useNavigate();
+  const { user } = useAuth();
+
   const stats = [
     { icon: Users, value: '1000+', label: 'Expert Medical Care' },
     { icon: Award, value: '60+', label: 'Years of Excellence' },
     { icon: Calendar, value: '98%', label: 'Happy Patients' },
     { icon: Clock, value: '40+', label: 'Years Trusted Pharmacy' }
   ];
+
+  const handleBookAppointment = () => {
+    if (user) {
+      navigate('/specialties');
+    } else {
+      navigate('/auth');
+    }
+  };
 
   return (
     <section id="home" className="relative min-h-screen bg-gradient-hero text-white overflow-hidden">
@@ -39,13 +52,16 @@ const HeroSection = () => {
               <div className="flex flex-col md:flex-row gap-4">
                 <div className="flex-1">
                   <select className="w-full bg-white/20 border border-white/30 rounded-lg px-4 py-3 text-white placeholder-white/70 focus:outline-none focus:ring-2 focus:ring-cyan-400">
-                    <option value="">Select Doctor</option>
-                    <option value="cardiology">Dr. Smith - Cardiology</option>
-                    <option value="neurology">Dr. Johnson - Neurology</option>
-                    <option value="orthopedics">Dr. Williams - Orthopedics</option>
+                    <option value="">Select Specialty</option>
+                    <option value="cardiology">Cardiology</option>
+                    <option value="neurology">Neurology</option>
+                    <option value="orthopedics">Orthopedics</option>
                   </select>
                 </div>
-                <Button className="bg-cyan-500 hover:bg-cyan-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors">
+                <Button 
+                  className="bg-cyan-500 hover:bg-cyan-600 text-white px-8 py-3 rounded-lg font-semibold transition-colors transform hover:scale-105 duration-200"
+                  onClick={() => navigate('/specialties')}
+                >
                   Search
                 </Button>
               </div>
@@ -53,10 +69,18 @@ const HeroSection = () => {
 
             {/* CTA Buttons */}
             <div className="flex flex-col sm:flex-row gap-4">
-              <Button size="lg" className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-8 py-4 rounded-lg font-semibold">
+              <Button 
+                size="lg" 
+                className="bg-gradient-to-r from-cyan-500 to-blue-500 hover:from-cyan-600 hover:to-blue-600 text-white px-8 py-4 rounded-lg font-semibold transform hover:scale-105 transition-all duration-200"
+                onClick={handleBookAppointment}
+              >
                 Book Appointment
               </Button>
-              <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-lg font-semibold">
+              <Button 
+                size="lg" 
+                variant="outline" 
+                className="border-white/30 text-white hover:bg-white/10 px-8 py-4 rounded-lg font-semibold transform hover:scale-105 transition-all duration-200"
+              >
                 Emergency Call
               </Button>
             </div>
@@ -92,7 +116,7 @@ const HeroSection = () => {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="text-center p-6 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300 animate-fade-in"
+              className="text-center p-6 bg-white/10 backdrop-blur-lg rounded-2xl border border-white/20 hover:bg-white/15 transition-all duration-300 animate-fade-in transform hover:scale-105"
               style={{ animationDelay: `${index * 0.2}s` }}
             >
               <div className="bg-gradient-to-r from-cyan-500 to-blue-500 rounded-full p-4 w-16 h-16 mx-auto mb-4">

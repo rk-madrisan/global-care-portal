@@ -1,66 +1,45 @@
 
 import { Heart, Brain, Bone, Baby, Eye, Pill, Stethoscope, Activity } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
+import { useQuery } from '@tanstack/react-query';
+import { supabase } from '@/integrations/supabase/client';
+import { useNavigate } from 'react-router-dom';
+
+const iconMap = {
+  Heart, Brain, Bone, Baby, Eye, Pill, Stethoscope, Activity
+};
 
 const SpecialtiesSection = () => {
-  const specialties = [
-    {
-      icon: Heart,
-      title: 'Cardiac Care',
-      description: 'Heart health treatment',
-      color: 'bg-red-100 text-red-600',
-      hoverColor: 'hover:bg-red-500 hover:text-white'
+  const navigate = useNavigate();
+
+  const { data: specialties } = useQuery({
+    queryKey: ['specialties'],
+    queryFn: async () => {
+      const { data, error } = await supabase
+        .from('specialties')
+        .select('*')
+        .limit(8)
+        .order('name');
+      
+      if (error) throw error;
+      return data;
     },
-    {
-      icon: Brain,
-      title: 'Neuroscience',
-      description: 'Brain and nerve care',
-      color: 'bg-purple-100 text-purple-600',
-      hoverColor: 'hover:bg-purple-500 hover:text-white'
-    },
-    {
-      icon: Bone,
-      title: 'Orthopedics',
-      description: 'Bone and joint care',
-      color: 'bg-blue-100 text-blue-600',
-      hoverColor: 'hover:bg-blue-500 hover:text-white'
-    },
-    {
-      icon: Baby,
-      title: 'Pediatric Care',
-      description: 'Child health services',
-      color: 'bg-green-100 text-green-600',
-      hoverColor: 'hover:bg-green-500 hover:text-white'
-    },
-    {
-      icon: Eye,
-      title: 'Dentistry',
-      description: 'Dental Care Solutions',
-      color: 'bg-cyan-100 text-cyan-600',
-      hoverColor: 'hover:bg-cyan-500 hover:text-white'
-    },
-    {
-      icon: Pill,
-      title: 'Gastrosciences',
-      description: 'Digestive health care',
-      color: 'bg-orange-100 text-orange-600',
-      hoverColor: 'hover:bg-orange-500 hover:text-white'
-    },
-    {
-      icon: Stethoscope,
-      title: 'Liver Care',
-      description: 'Liver Health and Transplant Care',
-      color: 'bg-teal-100 text-teal-600',
-      hoverColor: 'hover:bg-teal-500 hover:text-white'
-    },
-    {
-      icon: Activity,
-      title: 'Gynaecology',
-      description: 'Gynaecological Care Solutions',
-      color: 'bg-pink-100 text-pink-600',
-      hoverColor: 'hover:bg-pink-500 hover:text-white'
-    }
-  ];
+  });
+
+  const colorClasses = {
+    red: 'bg-red-100 text-red-600 hover:bg-red-500 hover:text-white',
+    purple: 'bg-purple-100 text-purple-600 hover:bg-purple-500 hover:text-white',
+    blue: 'bg-blue-100 text-blue-600 hover:bg-blue-500 hover:text-white',
+    green: 'bg-green-100 text-green-600 hover:bg-green-500 hover:text-white',
+    cyan: 'bg-cyan-100 text-cyan-600 hover:bg-cyan-500 hover:text-white',
+    orange: 'bg-orange-100 text-orange-600 hover:bg-orange-500 hover:text-white',
+    teal: 'bg-teal-100 text-teal-600 hover:bg-teal-500 hover:text-white',
+    pink: 'bg-pink-100 text-pink-600 hover:bg-pink-500 hover:text-white',
+    yellow: 'bg-yellow-100 text-yellow-600 hover:bg-yellow-500 hover:text-white',
+    indigo: 'bg-indigo-100 text-indigo-600 hover:bg-indigo-500 hover:text-white',
+    emerald: 'bg-emerald-100 text-emerald-600 hover:bg-emerald-500 hover:text-white',
+    violet: 'bg-violet-100 text-violet-600 hover:bg-violet-500 hover:text-white',
+  };
 
   return (
     <section id="specializations" className="py-20 bg-gray-50">
@@ -79,29 +58,41 @@ const SpecialtiesSection = () => {
 
         {/* Specialties Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          {specialties.map((specialty, index) => (
-            <Card
-              key={index}
-              className={`group cursor-pointer transform hover:scale-105 transition-all duration-300 hover:shadow-xl border-0 ${specialty.hoverColor}`}
-            >
-              <CardContent className="p-6 text-center">
-                <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center ${specialty.color} group-hover:bg-white/20 transition-colors duration-300`}>
-                  <specialty.icon className="h-8 w-8" />
-                </div>
-                <h3 className="text-xl font-semibold mb-2 text-gray-800 group-hover:text-white transition-colors duration-300">
-                  {specialty.title}
-                </h3>
-                <p className="text-gray-600 group-hover:text-white/90 transition-colors duration-300">
-                  {specialty.description}
-                </p>
-              </CardContent>
-            </Card>
-          ))}
+          {specialties?.map((specialty, index) => {
+            const IconComponent = iconMap[specialty.icon as keyof typeof iconMap] || Heart;
+            const colorClass = colorClasses[specialty.color as keyof typeof colorClasses] || colorClasses.blue;
+
+            return (
+              <Card
+                key={specialty.id}
+                className={`group cursor-pointer transform hover:scale-105 transition-all duration-300 hover:shadow-xl border-0 ${colorClass} animate-fade-in`}
+                style={{ animationDelay: `${index * 0.1}s` }}
+                onClick={() => navigate(`/specialty/${specialty.id}`, { 
+                  state: { specialtyName: specialty.name } 
+                })}
+              >
+                <CardContent className="p-6 text-center">
+                  <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-${specialty.color}-100 text-${specialty.color}-600 group-hover:bg-white/20 transition-colors duration-300`}>
+                    <IconComponent className="h-8 w-8" />
+                  </div>
+                  <h3 className="text-xl font-semibold mb-2 text-gray-800 group-hover:text-white transition-colors duration-300">
+                    {specialty.name}
+                  </h3>
+                  <p className="text-gray-600 group-hover:text-white/90 transition-colors duration-300">
+                    {specialty.description}
+                  </p>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
 
         {/* View All Button */}
         <div className="text-center">
-          <button className="bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg">
+          <button 
+            onClick={() => navigate('/specialties')}
+            className="bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+          >
             View All Specialties →
           </button>
         </div>
