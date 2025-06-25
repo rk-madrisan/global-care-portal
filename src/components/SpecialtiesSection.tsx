@@ -4,6 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { useQuery } from '@tanstack/react-query';
 import { supabase } from '@/integrations/supabase/client';
 import { useNavigate } from 'react-router-dom';
+import { ScrollReveal, FadeInUp } from './ScrollAnimations';
 
 const iconMap = {
   Heart, Brain, Bone, Baby, Eye, Pill, Stethoscope, Activity
@@ -45,16 +46,18 @@ const SpecialtiesSection = () => {
     <section id="specializations" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         {/* Header */}
-        <div className="text-center mb-16">
-          <h2 className="text-4xl font-bold text-gray-800 mb-4">
-            An Ecosystem for Clinical Excellence
-          </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            Discover world-class healthcare at Global's specialized centres of medical innovation. Our 
-            advanced facilities offer unmatched expertise in key specialties and super specialties, setting 
-            new global standards in clinical excellence and patient care.
-          </p>
-        </div>
+        <ScrollReveal>
+          <div className="text-center mb-16">
+            <h2 className="text-4xl font-bold text-gray-800 mb-4">
+              An Ecosystem for Clinical Excellence
+            </h2>
+            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+              Discover world-class healthcare at Global's specialized centres of medical innovation. Our 
+              advanced facilities offer unmatched expertise in key specialties and super specialties, setting 
+              new global standards in clinical excellence and patient care.
+            </p>
+          </div>
+        </ScrollReveal>
 
         {/* Specialties Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
@@ -63,39 +66,41 @@ const SpecialtiesSection = () => {
             const colorClass = colorClasses[specialty.color as keyof typeof colorClasses] || colorClasses.blue;
 
             return (
-              <Card
-                key={specialty.id}
-                className={`group cursor-pointer transform hover:scale-105 transition-all duration-300 hover:shadow-xl border-0 ${colorClass} animate-fade-in`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-                onClick={() => navigate(`/specialty/${specialty.id}`, { 
-                  state: { specialtyName: specialty.name } 
-                })}
-              >
-                <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-${specialty.color}-100 text-${specialty.color}-600 group-hover:bg-white/20 transition-colors duration-300`}>
-                    <IconComponent className="h-8 w-8" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-800 group-hover:text-white transition-colors duration-300">
-                    {specialty.name}
-                  </h3>
-                  <p className="text-gray-600 group-hover:text-white/90 transition-colors duration-300">
-                    {specialty.description}
-                  </p>
-                </CardContent>
-              </Card>
+              <FadeInUp key={specialty.id} delay={index * 0.1}>
+                <Card
+                  className={`group cursor-pointer transform hover:scale-105 transition-all duration-300 hover:shadow-xl border-0 ${colorClass}`}
+                  onClick={() => navigate(`/specialty/${specialty.id}`, { 
+                    state: { specialtyName: specialty.name } 
+                  })}
+                >
+                  <CardContent className="p-6 text-center">
+                    <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-${specialty.color}-100 text-${specialty.color}-600 group-hover:bg-white/20 transition-colors duration-300`}>
+                      <IconComponent className="h-8 w-8" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800 group-hover:text-white transition-colors duration-300">
+                      {specialty.name}
+                    </h3>
+                    <p className="text-gray-600 group-hover:text-white/90 transition-colors duration-300">
+                      {specialty.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </FadeInUp>
             );
           })}
         </div>
 
         {/* View All Button */}
-        <div className="text-center">
-          <button 
-            onClick={() => navigate('/specialties')}
-            className="bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
-          >
-            View All Specialties →
-          </button>
-        </div>
+        <ScrollReveal>
+          <div className="text-center">
+            <button 
+              onClick={() => navigate('/specialties')}
+              className="bg-gradient-to-r from-orange-400 to-orange-500 hover:from-orange-500 hover:to-orange-600 text-white px-8 py-4 rounded-full font-semibold transition-all duration-300 transform hover:scale-105 shadow-lg"
+            >
+              View All Specialties →
+            </button>
+          </div>
+        </ScrollReveal>
       </div>
     </section>
   );

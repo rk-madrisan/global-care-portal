@@ -6,6 +6,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { ArrowLeft, Heart, Brain, Bone, Baby, Eye, Pill, Stethoscope, Activity } from 'lucide-react';
 import { useNavigate } from 'react-router-dom';
+import { ScrollReveal, FadeInUp } from '@/components/ScrollAnimations';
 
 const iconMap = {
   Heart, Brain, Bone, Baby, Eye, Pill, Stethoscope, Activity
@@ -44,23 +45,25 @@ const Specialties = () => {
       {/* Header */}
       <div className="bg-gradient-hero text-white py-16">
         <div className="container mx-auto px-4">
-          <Button
-            onClick={() => navigate('/')}
-            variant="ghost"
-            className="text-white hover:bg-white/20 mb-6 animate-fade-in"
-          >
-            <ArrowLeft className="h-4 w-4 mr-2" />
-            Back to Home
-          </Button>
-          
-          <div className="text-center animate-fade-in">
-            <h1 className="text-4xl lg:text-5xl font-bold mb-4">
-              Our Medical Specialties
-            </h1>
-            <p className="text-xl text-gray-300 max-w-2xl mx-auto">
-              Comprehensive healthcare services across multiple specializations with world-class expertise
-            </p>
-          </div>
+          <ScrollReveal>
+            <Button
+              onClick={() => navigate('/')}
+              variant="ghost"
+              className="text-white hover:bg-white/20 mb-6"
+            >
+              <ArrowLeft className="h-4 w-4 mr-2" />
+              Back to Home
+            </Button>
+            
+            <div className="text-center">
+              <h1 className="text-4xl lg:text-5xl font-bold mb-4">
+                Our Medical Specialties
+              </h1>
+              <p className="text-xl text-gray-300 max-w-2xl mx-auto">
+                Comprehensive healthcare services across multiple specializations with world-class expertise
+              </p>
+            </div>
+          </ScrollReveal>
         </div>
       </div>
 
@@ -85,24 +88,24 @@ const Specialties = () => {
             };
 
             return (
-              <Card
-                key={specialty.id}
-                className={`group cursor-pointer transform hover:scale-105 transition-all duration-300 hover:shadow-xl border-0 animate-fade-in ${colorClasses[specialty.color as keyof typeof colorClasses] || colorClasses.blue}`}
-                style={{ animationDelay: `${index * 0.1}s` }}
-                onClick={() => handleSpecialtyClick(specialty.id, specialty.name)}
-              >
-                <CardContent className="p-6 text-center">
-                  <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-${specialty.color}-100 text-${specialty.color}-600 group-hover:bg-white/20 transition-colors duration-300`}>
-                    <IconComponent className="h-8 w-8" />
-                  </div>
-                  <h3 className="text-xl font-semibold mb-2 text-gray-800 group-hover:text-white transition-colors duration-300">
-                    {specialty.name}
-                  </h3>
-                  <p className="text-gray-600 group-hover:text-white/90 transition-colors duration-300">
-                    {specialty.description}
-                  </p>
-                </CardContent>
-              </Card>
+              <FadeInUp key={specialty.id} delay={index * 0.05}>
+                <Card
+                  className={`group cursor-pointer transform hover:scale-105 transition-all duration-300 hover:shadow-xl border-0 ${colorClasses[specialty.color as keyof typeof colorClasses] || colorClasses.blue}`}
+                  onClick={() => handleSpecialtyClick(specialty.id, specialty.name)}
+                >
+                  <CardContent className="p-6 text-center">
+                    <div className={`w-16 h-16 mx-auto mb-4 rounded-full flex items-center justify-center bg-${specialty.color}-100 text-${specialty.color}-600 group-hover:bg-white/20 transition-colors duration-300`}>
+                      <IconComponent className="h-8 w-8" />
+                    </div>
+                    <h3 className="text-xl font-semibold mb-2 text-gray-800 group-hover:text-white transition-colors duration-300">
+                      {specialty.name}
+                    </h3>
+                    <p className="text-gray-600 group-hover:text-white/90 transition-colors duration-300">
+                      {specialty.description}
+                    </p>
+                  </CardContent>
+                </Card>
+              </FadeInUp>
             );
           })}
         </div>

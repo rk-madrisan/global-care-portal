@@ -1,22 +1,24 @@
 
-import Header from '@/components/Header';
-import HeroSection from '@/components/HeroSection';
-import AboutSection from '@/components/AboutSection';
-import SpecialtiesSection from '@/components/SpecialtiesSection';
-import DoctorsSection from '@/components/DoctorsSection';
-import TestimonialsSection from '@/components/TestimonialsSection';
-import ContactSection from '@/components/ContactSection';
-import Footer from '@/components/Footer';
+import HeroSection from "@/components/HeroSection";
+import SpecialtiesSection from "@/components/SpecialtiesSection";
+import DoctorsSection from "@/components/DoctorsSection";
+import InsuranceSection from "@/components/InsuranceSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
+import AboutSection from "@/components/AboutSection";
+import ContactSection from "@/components/ContactSection";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
 
 const Index = () => {
   return (
     <div className="min-h-screen">
       <Header />
       <HeroSection />
-      <AboutSection />
       <SpecialtiesSection />
       <DoctorsSection />
+      <InsuranceSection />
       <TestimonialsSection />
+      <AboutSection />
       <ContactSection />
       <Footer />
     </div>
