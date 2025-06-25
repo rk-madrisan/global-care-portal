@@ -144,6 +144,21 @@ export type Database = {
         }
         Relationships: []
       }
+      specializations: {
+        Row: {
+          id: string
+          name: string | null
+        }
+        Insert: {
+          id: string
+          name?: string | null
+        }
+        Update: {
+          id?: string
+          name?: string | null
+        }
+        Relationships: []
+      }
       specialties: {
         Row: {
           color: string | null
