@@ -11,6 +11,8 @@ import Auth from "./pages/Auth";
 import Specialties from "./pages/Specialties";
 import SpecialtyDoctors from "./pages/SpecialtyDoctors";
 import BookAppointment from "./pages/BookAppointment";
+import DoctorLogin from "./pages/DoctorLogin";
+import DoctorDashboard from "./pages/DoctorDashboard";
 import NotFound from "./pages/NotFound";
 
 const queryClient = new QueryClient();
@@ -28,6 +30,8 @@ const App = () => (
             <Route path="/specialties" element={<Specialties />} />
             <Route path="/specialty/:specialtyId" element={<SpecialtyDoctors />} />
             <Route path="/book-appointment" element={<BookAppointment />} />
+            <Route path="/doctor-login" element={<DoctorLogin />} />
+            <Route path="/doctor-dashboard" element={<DoctorDashboard />} />
             <Route path="*" element={<NotFound />} />
           </Routes>
         </AuthProvider>

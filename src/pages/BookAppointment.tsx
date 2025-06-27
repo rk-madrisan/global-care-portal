@@ -7,8 +7,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import { Calendar, Clock, ArrowLeft, User, Phone, Mail } from 'lucide-react';
+import { Calendar, Clock, ArrowLeft, User, Phone, Mail, Download } from 'lucide-react';
 import { toast } from 'sonner';
+import { generateBookingPDF } from '@/utils/pdfGenerator';
 
 const BookAppointment = () => {
   const location = useLocation();
@@ -34,7 +35,7 @@ const BookAppointment = () => {
     setLoading(true);
     
     try {
-      const { error } = await supabase
+      const { data, error } = await supabase
         .from('appointments')
         .insert({
           patient_id: profile.id,
@@ -43,11 +44,27 @@ const BookAppointment = () => {
           appointment_time: appointmentData.time,
           notes: appointmentData.notes,
           status: 'pending'
-        });
+        })
+        .select()
+        .single();
 
       if (error) throw error;
 
-      toast.success('Appointment booked successfully!');
+      // Generate and download PDF
+      const bookingDetails = {
+        patientName: profile.full_name || 'Patient',
+        patientEmail: profile.email,
+        doctorName: doctorName || 'Doctor',
+        specialtyName: specialtyName || 'Specialty',
+        appointmentDate: appointmentData.date,
+        appointmentTime: appointmentData.time,
+        notes: appointmentData.notes,
+        bookingId: data.id
+      };
+
+      generateBookingPDF(bookingDetails);
+      
+      toast.success('Appointment booked successfully! PDF downloaded.');
       navigate('/');
     } catch (error: any) {
       toast.error(error.message);
@@ -164,8 +181,8 @@ const BookAppointment = () => {
                   className="w-full bg-gradient-to-r from-green-500 to-emerald-500 hover:from-green-600 hover:to-emerald-600 text-white py-3 transform hover:scale-105 transition-all duration-200"
                   disabled={loading}
                 >
-                  <Calendar className="h-4 w-4 mr-2" />
-                  {loading ? 'Booking Appointment...' : 'Confirm Appointment'}
+                  <Download className="h-4 w-4 mr-2" />
+                  {loading ? 'Booking & Generating PDF...' : 'Confirm Appointment & Download PDF'}
                 </Button>
               </form>
             </CardContent>
