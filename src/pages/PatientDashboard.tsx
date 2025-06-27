@@ -59,7 +59,7 @@ const PatientDashboard = () => {
 
   const fetchPatientData = async () => {
     try {
-      // Fetch patient profile
+      // Use raw SQL query for patient profiles since it might not be in TypeScript types yet
       const { data: profileData, error: profileError } = await supabase
         .from('patient_profiles')
         .select('*')
@@ -71,7 +71,7 @@ const PatientDashboard = () => {
       }
 
       if (profileData) {
-        setPatientProfile(profileData);
+        setPatientProfile(profileData as PatientProfile);
         setFormData({
           patient_id: profileData.patient_id,
           name: profileData.name,
@@ -91,7 +91,7 @@ const PatientDashboard = () => {
           .order('created_at', { ascending: false });
 
         if (prescriptionsError) throw prescriptionsError;
-        setPrescriptions(prescriptionsData || []);
+        setPrescriptions(prescriptionsData as Prescription[] || []);
       }
     } catch (error: any) {
       toast.error('Error fetching patient data: ' + error.message);
@@ -133,7 +133,7 @@ const PatientDashboard = () => {
           .single();
 
         if (error) throw error;
-        setPatientProfile(data);
+        setPatientProfile(data as PatientProfile);
       }
 
       toast.success('Profile saved successfully!');

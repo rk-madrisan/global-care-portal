@@ -114,6 +114,89 @@ export type Database = {
           },
         ]
       }
+      patient_profiles: {
+        Row: {
+          address: string
+          age: number
+          blood_group: string
+          created_at: string
+          created_by_doctor: string | null
+          family_contact: string
+          gender: string
+          id: string
+          name: string
+          ongoing_treatment: string | null
+          patient_id: string
+          updated_at: string
+          user_id: string | null
+        }
+        Insert: {
+          address: string
+          age: number
+          blood_group: string
+          created_at?: string
+          created_by_doctor?: string | null
+          family_contact: string
+          gender: string
+          id?: string
+          name: string
+          ongoing_treatment?: string | null
+          patient_id: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Update: {
+          address?: string
+          age?: number
+          blood_group?: string
+          created_at?: string
+          created_by_doctor?: string | null
+          family_contact?: string
+          gender?: string
+          id?: string
+          name?: string
+          ongoing_treatment?: string | null
+          patient_id?: string
+          updated_at?: string
+          user_id?: string | null
+        }
+        Relationships: []
+      }
+      prescriptions: {
+        Row: {
+          created_at: string
+          doctor_name: string
+          document_url: string | null
+          id: string
+          patient_id: string
+          prescription_text: string
+        }
+        Insert: {
+          created_at?: string
+          doctor_name: string
+          document_url?: string | null
+          id?: string
+          patient_id: string
+          prescription_text: string
+        }
+        Update: {
+          created_at?: string
+          doctor_name?: string
+          document_url?: string | null
+          id?: string
+          patient_id?: string
+          prescription_text?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "prescriptions_patient_id_fkey"
+            columns: ["patient_id"]
+            isOneToOne: false
+            referencedRelation: "patient_profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       profiles: {
         Row: {
           created_at: string | null
